@@ -1,0 +1,103 @@
+create table t_admin
+(
+admin_id varchar(20),
+password varchar(20),
+constraint t_admin_pk primary key (admin_id)
+);
+
+create table t_member
+(
+member_id varchar(20),
+member_name varchar(20),
+constraint t_member_pk primary key (member_id)
+);
+
+create table t_book
+(
+book_id varchar(20),
+book_name varchar(20),
+issued varchar(20),
+constraint t_book_pk primary key (book_id),
+constraint t_book_fk_member foreign key (issued)
+references t_member(member_id)
+);
+
+insert into t_admin
+(admin_id,password)
+values
+('admin1','admin1');
+
+insert into t_admin
+(admin_id,password)
+values
+('admin2','admin2');
+
+select * from t_admin;
+
+insert into t_member
+(member_id,member_name)
+values
+('001','Member 1');
+
+insert into t_member
+(member_id,member_name)
+values
+('002','Member 2');
+
+insert into t_member
+(member_id,member_name)
+values
+('003','Member 3');
+
+select * from t_member;
+
+insert into t_book
+(book_id,book_name)
+values
+('001','Intro to C++');
+
+insert into t_book
+(book_id,book_name)
+values
+('002','Python for Beginners');
+
+insert into t_book
+(book_id,book_name,issued)
+values
+('003','JavaScript Basics','003');
+
+select * from t_book;
+
+commit;
+
+#list books
+select * from t_book;
+
+#list members
+select * from t_member;
+
+#list issued
+select t_book.*, t_member.*
+from t_book,t_member
+where t_book.issued is not null
+and t_book.issued=t_member.member_id;
+
+#admin verify
+select * from t_admin
+where t_admin.admin_id='admin1'
+and t_admin.password='admin1';
+
+#update book
+update t_book 
+set book_id = '004', book_name = 'AAA' 
+where book_id='001';
+
+#issue a book
+update t_book 
+set issued = '002' 
+where book_id='002';
+
+#remove issue
+update t_book 
+set issued = null 
+where book_id='002';
